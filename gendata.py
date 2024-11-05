@@ -41,6 +41,8 @@ def consultar_datos_carga(carnet):
             WHERE a.Carnet = %s
             AND a.CodMat = b.CodMat
             AND a.Seccion = b.Seccion
+            AND b.Aula != 'AULA VIRTUAL'
+ 
         """, (carnet,))
         datos_carga = cursor.fetchall()
         cursor.close()
