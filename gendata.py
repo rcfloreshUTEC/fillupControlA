@@ -94,7 +94,7 @@ def procesar_datos(mes, anio):
 
             for _, _, _, aula, dias, hora in datos_carga:
                 dias_carga = dias.split('-')
-                dia_semana = fecha_actual.isoweekday()  # Obtener el día de la semana en número
+                dia_semana = fecha_actual.isoweekday()
 
                 if dia_semana not in [dias_semana.get(dia, 0) for dia in dias_carga]:
                     print(f"Día {dia} no coincide para el aula {aula} y carnet {carnet}.")
@@ -104,4 +104,4 @@ def procesar_datos(mes, anio):
                 fecha_hora = generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin)
                 enviar_datos(aula, carnet, fecha_hora)
 
-procesar_datos(mes=7, anio=2024)  # Cambia el mes y año aquí según sea necesario
+procesar_datos(mes=7, anio=2024) 
