@@ -1,5 +1,4 @@
 from faker import Faker
-import MySQLdb
 import random
 import re
 from conn.conn_db import get_connection
