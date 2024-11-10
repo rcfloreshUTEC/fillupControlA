@@ -104,4 +104,4 @@ def procesar_datos(mes, anio):
                 fecha_hora = generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin)
                 enviar_datos(aula, carnet, fecha_hora)
 
-procesar_datos(mes=7, anio=2024) 
+procesar_datos(mes=7, anio=2024)
