@@ -44,7 +44,7 @@ def consultar_datos_carga(carnet):
                 AND a.Ciclo = b.Ciclo
             WHERE a.Carnet = %s
             AND b.Aula != 'AULA VIRTUAL'
-            AND b.Ciclo = 'Ciclo 01-2024'
+            AND b.Ciclo = 'Ciclo 02-2024'
 
         """, (carnet,))
         datos_carga = cursor.fetchall()
@@ -87,12 +87,12 @@ def procesar_datos(anio):
 
     # Rango de meses y días para el ciclo deseado
     meses_dias = {
-        1: range(19, 32),
-        2: range(1, 32),
-        3: range(1, 32),
-        4: range(1, 31),
-        5: range(1, 32),
-        6: range(1, 11)
+        7: range(23, 32),
+        8: range(1, 32),
+        9: range(1, 32),
+        10: range(1, 31),
+        11: range(1, 32),
+        12: range(1, 16)
     }
 
     for carnet in carnets:
