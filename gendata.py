@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from conn.conn_db import get_connection
 
-API_URL = "http://192.168.68.107:8000/api/api_fakeinfo/"
+API_URL = "http://192.168.68.111:8000/api/api_fakeinfo/"
 HEADERS = {'Content-Type': 'application/json'}
 
 # Diccionario de días en español
@@ -56,7 +56,8 @@ def generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin):
     delta = timedelta(minutes=random.randint(-10, 10))
     hora_seleccionada = (hora_inicio_dt + delta).time()
     fecha_hora = datetime(anio, mes, dia, hora_seleccionada.hour, hora_seleccionada.minute)
-    return fecha_hora.isoformat()
+    # Convertir al formato deseado (sin microsegundos ni zona horaria)
+    return fecha_hora.strftime("%Y-%m-%dT%H:%M:%S")
 
 
 def enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora):
@@ -72,7 +73,7 @@ def enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora):
     try:
         response = requests.post(API_URL, json=payload, headers=HEADERS)
         response.raise_for_status()
-        # print(f"Datos enviados exitosamente para carnet {carnet}, ciclo {ciclo}, sección {seccion}. Fecha y hora: {fecha_hora}")
+        print(f"Datos enviados exitosamente para carnet {carnet}, ciclo {ciclo}, sección {seccion}. Fecha y hora: {fecha_hora}")
     except requests.exceptions.RequestException as e:
         print(f"Error al enviar los datos para carnet {carnet}: {e}")
 
@@ -132,5 +133,4 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
 
 
 # Ejecutar el procesamiento para el rango de fechas y ciclo deseado
-# procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 01-2024")
-procesar_datos(fecha_inicio_str="23-07-2024", fecha_fin_str="16-12-2024", ciclo="Ciclo 02-2024")
+procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 02-2024")
