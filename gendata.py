@@ -6,14 +6,12 @@ from conn.conn_db import get_connection
 API_URL = "http://192.168.68.111:8000/api/api_fakeinfo/"
 HEADERS = {'Content-Type': 'application/json'}
 
-# Diccionario de días en español
 dias_semana = {
     'Lu': 1, 'Ma': 2, 'Mie': 3, 'Jue': 4, 'Vie': 5, 'Sab': 6, 'Dom': 7
 }
 
 
 def seleccionar_carnets():
-    """Selecciona todos los carnets de la tabla custom_alumnos."""
     connection = get_connection()
     carnets = []
     if connection:
@@ -27,7 +25,6 @@ def seleccionar_carnets():
 
 
 def consultar_datos_carga(carnet, ciclo):
-    """Consulta la información de carga académica y de inscripción para un carnet y ciclo específicos."""
     connection = get_connection()
     datos_carga = []
     if connection:
@@ -96,7 +93,7 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
             print(f"No se encontró información de carga para carnet {carnet} en ciclo {ciclo}.")
             continue
 
-        total_registros = 0  # Contador de fechas y horas registradas para cada carnet
+        total_registros = 0
 
         fecha_actual = fecha_inicio
         while fecha_actual <= fecha_fin:
@@ -105,24 +102,21 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
             anio = fecha_actual.year
 
             for _, codmat, seccion, aula, dias, hora, ciclo_bd in datos_carga:
-                if ciclo_bd != ciclo:  # Verificación de ciclo
+                if ciclo_bd != ciclo:
                     continue
 
                 dias_carga = dias.split('-')
                 dia_semana = fecha_actual.isoweekday()
 
-                # Verificar si el día de la semana coincide
                 if dia_semana not in [dias_semana.get(dia, 0) for dia in dias_carga]:
                     continue
 
-                # Generar una sola fecha y hora aleatoria en el rango especificado
                 hora_inicio, hora_fin = hora.split('-')
                 fecha_hora = generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin)
 
-                # Llamar a enviar_datos con todos los argumentos necesarios, incluyendo ciclo
                 enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora)
                 total_registros += 1
-                break  # Asegura que solo se envíe una entrada por fecha
+                break
 
             fecha_actual += timedelta(days=1)
 
@@ -132,5 +126,5 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
     print(f"Se registraron un total de {total_registros_global} fechas y horas para todos los carnets en el ciclo {ciclo} y el rango {fecha_inicio_str} a {fecha_fin_str}.")
 
 
-# Ejecutar el procesamiento para el rango de fechas y ciclo deseado
-procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 02-2024")
+procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 01-2024")
+# procesar_datos(fecha_inicio_str="23-07-2024", fecha_fin_str="16-12-2024", ciclo="Ciclo 02-2024")
