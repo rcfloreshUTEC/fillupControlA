@@ -3,12 +3,14 @@ import requests
 from datetime import datetime, timedelta
 from conn.conn_db import get_connection
 
-API_URL = "http://192.168.68.111:8000/api/api_fakeinfo/"
+API_URL = "http://192.168.68.104:8000/api/api_fakeinfo/"
 HEADERS = {'Content-Type': 'application/json'}
 
 dias_semana = {
     'Lu': 1, 'Ma': 2, 'Mie': 3, 'Jue': 4, 'Vie': 5, 'Sab': 6, 'Dom': 7
 }
+
+dias_invertidos = {v: k for k, v in dias_semana.items()}
 
 
 def seleccionar_carnets():
@@ -53,11 +55,10 @@ def generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin):
     delta = timedelta(minutes=random.randint(-10, 10))
     hora_seleccionada = (hora_inicio_dt + delta).time()
     fecha_hora = datetime(anio, mes, dia, hora_seleccionada.hour, hora_seleccionada.minute)
-    # Convertir al formato deseado (sin microsegundos ni zona horaria)
     return fecha_hora.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora):
+def enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora, dias):
     """Envía los datos a la API en formato JSON, asegurando que no haya duplicados por fecha."""
     payload = {
         "aula": aula,
@@ -65,8 +66,13 @@ def enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora):
         "ciclo": ciclo,
         "codMat": codmat,
         "seccion": seccion,
-        "fecha": fecha_hora
+        "Dias": dias,  # Incluir directamente el valor de la columna 'Dias'
+        "fecha": fecha_hora,
     }
+
+    # Debug: Verificar el contenido del payload antes de enviarlo
+    print(f"Payload preparado para envío: {payload}")
+
     try:
         response = requests.post(API_URL, json=payload, headers=HEADERS)
         response.raise_for_status()
@@ -114,7 +120,7 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
                 hora_inicio, hora_fin = hora.split('-')
                 fecha_hora = generar_fecha_hora(dia, mes, anio, hora_inicio, hora_fin)
 
-                enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora)
+                enviar_datos(aula, carnet, ciclo, codmat, seccion, fecha_hora, dias)  # Pasar 'dias' al enviar_datos
                 total_registros += 1
                 break
 
@@ -126,5 +132,4 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
     print(f"Se registraron un total de {total_registros_global} fechas y horas para todos los carnets en el ciclo {ciclo} y el rango {fecha_inicio_str} a {fecha_fin_str}.")
 
 
-procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 01-2024")
-# procesar_datos(fecha_inicio_str="23-07-2024", fecha_fin_str="16-12-2024", ciclo="Ciclo 02-2024")
+procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="21-06-2024", ciclo="Ciclo 01-2024")
