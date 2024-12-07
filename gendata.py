@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from conn.conn_db import get_connection
 
-API_URL = "http://192.168.68.107:8000/api/api_fakeinfo/"
+API_URL = "http://192.168.68.111:8000/api/api_fakeinfo/"
 HEADERS = {'Content-Type': 'application/json'}
 
 # Diccionario de días en español
@@ -132,5 +132,5 @@ def procesar_datos(fecha_inicio_str, fecha_fin_str, ciclo):
 
 
 # Ejecutar el procesamiento para el rango de fechas y ciclo deseado
-# procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 01-2024")
+#procesar_datos(fecha_inicio_str="19-01-2024", fecha_fin_str="11-06-2024", ciclo="Ciclo 01-2024")
 procesar_datos(fecha_inicio_str="23-07-2024", fecha_fin_str="16-12-2024", ciclo="Ciclo 02-2024")

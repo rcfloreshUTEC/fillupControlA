@@ -23,14 +23,14 @@ if connection:
 
     def generar_carnet_unico():
         while True:
-            carnet = f"25-{random.randint(1000, 9999)}-2024"
+            carnet = f"25-{random.randint(1000, 5000)}-2023"
             cursor.execute("SELECT COUNT(*) FROM custom_alumnos WHERE carnet = %s", (carnet,))
             (exists,) = cursor.fetchone()
             if not exists:
                 return carnet
 
 
-    for _ in range(2173):
+    for _ in range(3000):
         carnet = generar_carnet_unico()
         nombres = fake.first_name()
         apellidos = fake.last_name()

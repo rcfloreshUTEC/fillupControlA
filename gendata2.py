@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from conn.conn_db import get_connection
 
-API_URL = "http://192.168.68.107:8000/api/api_fakeinfo/"
+API_URL = "http://localhost:8000/api/api_fakeinfo/"
 HEADERS = {'Content-Type': 'application/json'}
 
 # Diccionario de días en español
